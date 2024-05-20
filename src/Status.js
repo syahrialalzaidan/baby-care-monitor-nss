@@ -5,7 +5,7 @@ export default function Status() {
         Name's Room
       </div>
 
-      <div className="py-4">
+      <div className="py-4 px-8">
         <div className="w-full flex justify-center">
           <img
             src="/baby-music.svg"

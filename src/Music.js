@@ -7,7 +7,7 @@ export default function Music() {
         Name's Room
       </div>
 
-      <div className="py-4 flex flex-col items-center justify-center">
+      <div className="py-4 px-8 flex flex-col items-center justify-center">
         <div className="w-full flex justify-center">
           <img
             src="/baby-music.svg"
@@ -16,7 +16,7 @@ export default function Music() {
           />
         </div>
 
-        <div className="bg-[#E4FFE0] mt-4 p-8 flex justify-center items-center flex-wrap gap-8 w-3/4">
+        <div className="bg-[#E4FFE0] mt-4 p-8 flex justify-center items-center flex-wrap gap-8 md:w-3/4">
           <Audio title="Audio 1" link="baby-lullaby.mp3" />
           <Audio title="Audio 2" link="baby-lullaby.mp3" />
           <Audio title="Audio 3" link="baby-lullaby.mp3" />
