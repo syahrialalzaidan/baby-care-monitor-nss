@@ -22,9 +22,13 @@ export default function Status() {
             </p>
           </div>
 
-          <div className="bg-[#E4FFE0] flex items-center justify-center p-4 w-36">
+          <div className="bg-[#E4FFE0] flex items-center justify-center p-4 w-36 rounded-lg">
             <p className="font-semibold">Music</p>
           </div>
+
+          <button className="bg-red-500 text-white p-4 rounded-lg w-36">
+            Disconnect
+          </button>
         </div>
       </div>
     </div>

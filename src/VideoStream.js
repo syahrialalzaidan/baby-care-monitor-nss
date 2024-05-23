@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import Webcam from 'react-webcam';
+import React, { useRef, useEffect } from "react";
+import Webcam from "react-webcam";
 
 const VideoStream = ({ socket }) => {
   const webcamRef = useRef(null);
@@ -13,7 +13,7 @@ const VideoStream = ({ socket }) => {
     ) {
       const screenshot = webcamRef.current.getScreenshot();
       if (screenshot) {
-        const base64Frame = screenshot.split(',')[1]; // Remove the data:image/jpeg;base64, part
+        const base64Frame = screenshot.split(",")[1]; // Remove the data:image/jpeg;base64, part
         socket.send(JSON.stringify({ video: base64Frame }));
       }
     }

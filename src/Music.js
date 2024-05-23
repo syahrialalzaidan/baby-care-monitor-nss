@@ -16,12 +16,17 @@ export default function Music() {
           />
         </div>
 
-        <div className="bg-[#E4FFE0] mt-4 p-8 flex justify-center items-center flex-wrap gap-8 md:w-3/4">
-          <Audio title="Audio 1" link="baby-lullaby.mp3" />
-          <Audio title="Audio 2" link="baby-lullaby.mp3" />
-          <Audio title="Audio 3" link="baby-lullaby.mp3" />
-          <Audio title="Audio 4" link="baby-lullaby.mp3" />
+        <div className="bg-[#E4FFE0] mt-4 w-fit p-4 md:p-8 flex flex-col justify-center items-center gap-8 md:w-3/4">
+          <div className="flex flex-wrap gap-8 justify-center items-center">
+            <Audio title="Audio 1" link="baby-lullaby.mp3" />
+            <Audio title="Audio 2" link="baby-lullaby.mp3" />
+            <Audio title="Audio 3" link="baby-lullaby.mp3" />
+            <Audio title="Audio 4" link="baby-lullaby.mp3" />
+          </div>
         </div>
+        <button className="bg-red-500 my-4 text-white p-4 rounded-lg w-36">
+          Disconnect
+        </button>
       </div>
     </div>
   );
