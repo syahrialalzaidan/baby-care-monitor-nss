@@ -1,4 +1,35 @@
+import React, { useState, useEffect } from 'react';
+import VideoStream from './VideoStream';
+
 function App() {
+  const [isCamera, setIsCamera] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    let socketInstance;
+    if (isCamera) {
+      socketInstance = new WebSocket('ws://34.66.222.210/ws/video_stream');
+      setSocket(socketInstance);
+    }
+
+    return () => {
+      if (socketInstance) {
+        socketInstance.close();
+      }
+    };
+  }, [isCamera]);
+
+  const handleConnectAsCamera = () => {
+    setIsCamera(true);
+  };
+
+  const handleConnectAsClient = () => {
+    setIsCamera(false);
+    if (socket) {
+      socket.close();
+    }
+  };
+
   return (
     <div className="bg-[#FCFFE0] min-h-screen">
       <div className="bg-[#BACD92] h-20 md:h-24 flex justify-center items-center w-full text-3xl md:text-5xl z-50 fixed font-semibold">
@@ -16,10 +47,13 @@ function App() {
           Peace of Mind, All the Time...
         </h1>
 
-        <div className="bg-[#E4FFE0] text-lg md:text-xl w-fit p-4 rounded-lg">
-          <p>Connect Monitor</p>
+        <div className="bg-[#E4FFE0] text-lg md:text-xl w-fit p-4 rounded-lg cursor-pointer" onClick={handleConnectAsCamera}>
+          <p>Connect as Camera</p>
         </div>
       </div>
+
+      {/* Render the VideoStream component based on the user's selection */}
+      {isCamera && socket ? <VideoStream socket={socket} /> : null}
     </div>
   );
 }
