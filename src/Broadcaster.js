@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 
-const VideoStream = ({ socket }) => {
+const Broadcaster = ({ socket }) => {
   const webcamRef = useRef(null);
 
   const sendFrame = async () => {
@@ -39,4 +39,4 @@ const VideoStream = ({ socket }) => {
   );
 };
 
-export default VideoStream;
+export default Broadcaster;

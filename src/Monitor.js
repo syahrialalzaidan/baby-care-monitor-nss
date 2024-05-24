@@ -1,6 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Broadcaster from "./Broadcaster";
+import { useNavigate } from "react-router-dom";
 
 function Monitor() {
+  const [socket, setSocket] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const socketInstance = new WebSocket("ws://34.66.222.210/ws/video_stream/");
+
+    socketInstance.onopen = () => {
+      console.log("WebSocket connection established");
+      setSocket(socketInstance);
+    };
+
+    socketInstance.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    socketInstance.onclose = (event) => {
+      if (event.wasClean) {
+        console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+      } else {
+        console.error("WebSocket connection closed unexpectedly");
+      }
+      setSocket(null);
+    };
+
+    return () => {
+      if (socketInstance.readyState === WebSocket.OPEN) {
+        socketInstance.close();
+      }
+    };
+  }, []);
+
+  const handleDisconnect = () => {
+    if (socket) {
+      socket.close();
+    }
+    setSocket(null);
+    navigate("/");
+  };
+
   return (
     <div className="bg-[#FCFFE0] min-h-screen">
       <div className="bg-[#BACD92] h-20 md:h-24 flex justify-center items-center w-full text-3xl md:text-5xl z-50 fixed font-semibold">
@@ -18,13 +59,15 @@ function Monitor() {
           Connected as Monitor
         </h1>
 
-        <button className="bg-red-500 hover:brightness-105 text-white p-4 rounded-lg w-36">
+        <button
+          className="bg-red-500 hover:brightness-105 text-white p-4 rounded-lg w-36"
+          onClick={handleDisconnect}
+        >
           Disconnect
         </button>
       </div>
 
-      {/* Render the VideoStream component based on the user's selection */}
-      {/* {isCamera && socket ? <VideoStream socket={socket} /> : null} */}
+      {socket ? <Broadcaster socket={socket} /> : null}
     </div>
   );
 }

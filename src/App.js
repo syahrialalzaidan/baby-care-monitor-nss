@@ -1,33 +1,14 @@
-import React, { useState, useEffect } from "react";
-import VideoStream from "./VideoStream";
+import {useNavigate} from "react-router-dom";
 
 function App() {
-  const [isCamera, setIsCamera] = useState(false);
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    let socketInstance;
-    if (isCamera) {
-      socketInstance = new WebSocket("ws://34.66.222.210/ws/video_stream");
-      setSocket(socketInstance);
-    }
-
-    return () => {
-      if (socketInstance) {
-        socketInstance.close();
-      }
-    };
-  }, [isCamera]);
+  const navigate = useNavigate();
 
   const handleConnectAsCamera = () => {
-    setIsCamera(true);
+    navigate("/monitor");
   };
 
   const handleConnectAsClient = () => {
-    setIsCamera(false);
-    if (socket) {
-      socket.close();
-    }
+    navigate("/status");
   };
 
   return (
@@ -63,9 +44,6 @@ function App() {
           </div>
         </div>
       </div>
-
-      {/* Render the VideoStream component based on the user's selection */}
-      {isCamera && socket ? <VideoStream socket={socket} /> : null}
     </div>
   );
 }
