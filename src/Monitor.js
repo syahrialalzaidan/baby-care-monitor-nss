@@ -1,44 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import { WebSocketContext } from "./WebSocketContext";
 import Broadcaster from "./Broadcaster";
 import { useNavigate } from "react-router-dom";
 
 function Monitor() {
-  const [socket, setSocket] = useState(null);
+  const socket = useContext(WebSocketContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const socketInstance = new WebSocket("ws://34.66.222.210/ws/video_stream/");
-
-    socketInstance.onopen = () => {
-      console.log("WebSocket connection established");
-      setSocket(socketInstance);
-    };
-
-    socketInstance.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    socketInstance.onclose = (event) => {
-      if (event.wasClean) {
-        console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-      } else {
-        console.error("WebSocket connection closed unexpectedly");
-      }
-      setSocket(null);
-    };
-
-    return () => {
-      if (socketInstance.readyState === WebSocket.OPEN) {
-        socketInstance.close();
-      }
-    };
-  }, []);
 
   const handleDisconnect = () => {
     if (socket) {
       socket.close();
     }
-    setSocket(null);
     navigate("/");
   };
 

@@ -6,7 +6,7 @@ export const WebSocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketInstance = new WebSocket("ws://34.66.222.210/ws/video_stream/");
+    const socketInstance = new WebSocket("ws://34.101.110.106/ws/video_stream/");
 
     socketInstance.onopen = () => {
       console.log("WebSocket connection established");
