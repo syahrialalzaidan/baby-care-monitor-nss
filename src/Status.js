@@ -9,9 +9,6 @@ export default function Status() {
 	const navigate = useNavigate();
 
 	const handleDisconnect = () => {
-		if (socket) {
-			socket.close();
-		}
 		navigate('/');
 	};
 

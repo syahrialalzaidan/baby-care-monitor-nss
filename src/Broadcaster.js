@@ -148,9 +148,14 @@ const Broadcaster = ({ socket }) => {
 	}, [socket]);
 
 	return (
-		<div>
-			<Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-			<h2>Is Baby Crying? {isBabyCrying ? 'YES' : 'NO'}</h2>
+		<div style={{ visibility: 'hidden', position: 'absolute' }}>
+			<Webcam
+				audio={false}
+				ref={webcamRef}
+				screenshotFormat="image/jpeg" // Try changing to "image/png" if needed
+				width={640}
+				height={480}
+			/>
 		</div>
 	);
 };

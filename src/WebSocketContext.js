@@ -28,12 +28,12 @@ export const WebSocketProvider = ({ children }) => {
 			setSocket(null);
 		};
 
-		return () => {
-			if (socketInstance.readyState === WebSocket.OPEN) {
-				socketInstance.close();
-			}
-		};
-	}, []);
+		  return () => {
+			  if (socketInstance.readyState === WebSocket.OPEN) {
+				  socketInstance.close();
+			  }
+		  };
+	  }, []);
 
 	return <WebSocketContext.Provider value={socket}>{children}</WebSocketContext.Provider>;
 };
