@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-const Receiver = ({ socket }) => {
+const VideoClient = ({ socket }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -15,6 +15,7 @@ const Receiver = ({ socket }) => {
       if (data.video) {
         const img = new Image();
         img.src = `data:image/jpeg;base64,${data.video}`;
+        console.log(data);
         img.onload = () => {
           if (canvasRef.current) {
             const ctx = canvasRef.current.getContext("2d");
@@ -52,4 +53,4 @@ const Receiver = ({ socket }) => {
   );
 };
 
-export default Receiver;
+export default VideoClient;

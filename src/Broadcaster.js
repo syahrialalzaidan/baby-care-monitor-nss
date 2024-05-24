@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 
-const Broadcaster = ({ socket }) => {
+const Broadcaster = ({socket}) => {
   const webcamRef = useRef(null);
 
   const sendFrame = async () => {
@@ -15,6 +15,7 @@ const Broadcaster = ({ socket }) => {
       if (screenshot) {
         const base64Frame = screenshot.split(",")[1]; // Remove the data:image/jpeg;base64, part
         socket.send(JSON.stringify({ video: base64Frame }));
+        console.log(webcamRef.current.getScreenshot());
       }
     }
   };
