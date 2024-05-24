@@ -50,6 +50,8 @@ const Broadcaster = ({ socket }) => {
 
 	const [audioBlob, setAudioBlob] = useState(null);
 	const [isBabyCrying, setIsBabyCrying] = useState(false);
+	const [audioSong, setAudioSong] = useState('baby-lullaby.mp3');
+	const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
 	const sendFrame = async () => {
 		if (
@@ -65,6 +67,18 @@ const Broadcaster = ({ socket }) => {
 				// console.log('Full data URI:', screenshot);
 				// console.log('Base64 data:', base64Frame);
 			}
+		}
+	};
+
+	const playAudio = async () => {
+		if (!isAudioPlaying) {
+			const audio = new Audio(audioSong);
+			audio.play();
+			setIsAudioPlaying(true);
+
+			audio.onended = () => {
+				setIsAudioPlaying(false);
+			};
 		}
 	};
 
@@ -110,10 +124,20 @@ const Broadcaster = ({ socket }) => {
 
 				const data = await response.json();
 				console.log(data);
+
 				setIsBabyCrying(data['prediction'] === 'Yes');
+				setAudioSong(
+					data['current_song'] === '' ? 'baby-lullaby.mp3' : data['current_song']
+				);
+
+				console.log(`isBabyCrying? ${isBabyCrying}`);
 			}, 1000);
 		}
 	}, [recordingBlob, startRecording, audioBlob, setAudioBlob, setIsBabyCrying]);
+
+	useEffect(() => {
+		if (isBabyCrying) playAudio();
+	}, [isBabyCrying]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
