@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VideoClient from './VideoClient';
 import { WebSocketContext } from './WebSocketContext';
 
 export default function Status() {
+	const [isBabyCrying, setIsBabyCrying] = useState(false);
 	const socket = useContext(WebSocketContext);
 	const navigate = useNavigate();
 
@@ -17,6 +18,23 @@ export default function Status() {
 	const handleMusic = () => {
 		navigate('/music');
 	};
+
+	useEffect(() => {
+		const interval = setInterval(async () => {
+			const response = await fetch('http://34.101.110.106/api/baby_status/');
+			const data = await response.json();
+			console.log(data);
+			setIsBabyCrying(data['is_baby_crying']);
+
+			console.log(isBabyCrying);
+			if (isBabyCrying) {
+				alert('Baby is crying!');
+			}
+		}, 5000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, [setIsBabyCrying]);
 
 	return (
 		<div className="bg-[#FCFFE0] min-h-screen">
@@ -34,7 +52,12 @@ export default function Status() {
 				<div className="flex flex-col gap-4 items-center mt-4">
 					<div className="bg-[#E4FFE0] flex items-center justify-center w-36 p-4 rounded-lg">
 						<p>
-							Status: <span className="text-[#519246] font-semibold">Normal</span>
+							Status:{' '}
+							{isBabyCrying ? (
+								<span className="text-[#FF0000] font-semibold">Crying!</span>
+							) : (
+								<span className="text-[#519246] font-semibold">Normal</span>
+							)}
 						</p>
 					</div>
 

@@ -15,7 +15,7 @@ const VideoClient = ({ socket }) => {
 			if (data.video) {
 				const img = new Image();
 				img.src = `data:image/jpeg;base64,${data.video}`;
-				console.log(data);
+				// console.log(data);
 				img.onload = () => {
 					if (canvasRef.current) {
 						const ctx = canvasRef.current.getContext('2d');
