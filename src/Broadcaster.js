@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAudioRecorder } from 'react-audio-voice-recorder';
+import Webcam from 'react-webcam';
 import { WaveFile } from 'wavefile';
 
 const decodeOggBlob = async (blob) => {
@@ -42,12 +43,30 @@ const getWaveAsBase64 = async (waveBlob) => {
 	});
 };
 
-const AudioRecorder = () => {
+const Broadcaster = ({ socket }) => {
 	const { startRecording, stopRecording, recordingBlob, isRecording } = useAudioRecorder();
 	const recordingInterval = useRef(null);
+	const webcamRef = useRef(null);
 
 	const [audioBlob, setAudioBlob] = useState(null);
 	const [isBabyCrying, setIsBabyCrying] = useState(false);
+
+	const sendFrame = async () => {
+		if (
+			webcamRef.current &&
+			webcamRef.current.getScreenshot &&
+			socket &&
+			socket.readyState === WebSocket.OPEN
+		) {
+			const screenshot = webcamRef.current.getScreenshot();
+			if (screenshot) {
+				const base64Frame = screenshot.split(',')[1]; // Remove the data:image/jpeg;base64, part
+				socket.send(JSON.stringify({ video: base64Frame }));
+				// console.log('Full data URI:', screenshot);
+				// console.log('Base64 data:', base64Frame);
+			}
+		}
+	};
 
 	// Use Effect for starting a recording
 	useEffect(() => {
@@ -90,17 +109,26 @@ const AudioRecorder = () => {
 				});
 
 				const data = await response.json();
+				console.log(data);
 				setIsBabyCrying(data['prediction'] === 'Yes');
 			}, 1000);
 		}
 	}, [recordingBlob, startRecording, audioBlob, setAudioBlob, setIsBabyCrying]);
 
+	useEffect(() => {
+		const interval = setInterval(() => {
+			sendFrame();
+		}, 1000 / 60); // 60 fps
+
+		return () => clearInterval(interval);
+	}, [socket]);
+
 	return (
 		<div>
-			<p>Is Baby Crying?: {isBabyCrying ? 'Yes' : 'No'}</p>
-			{recordingBlob && <audio src={URL.createObjectURL(recordingBlob)} controls />}
+			<Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+			<h2>Is Baby Crying? {isBabyCrying ? 'YES' : 'NO'}</h2>
 		</div>
 	);
 };
 
-export default AudioRecorder;
+export default Broadcaster;
