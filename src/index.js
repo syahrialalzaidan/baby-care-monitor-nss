@@ -7,10 +7,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Music from "./Music";
 import Status from "./Status";
 import Monitor from "./Monitor";
+import { WebSocketProvider } from "./WebSocketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <WebSocketProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
@@ -19,7 +20,7 @@ root.render(
         <Route path="/monitor" element={<Monitor />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </WebSocketProvider>
 );
 
 reportWebVitals();

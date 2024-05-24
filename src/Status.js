@@ -1,46 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import VideoClient from "./VideoClient"
+import { WebSocketContext } from "./WebSocketContext";
 
 export default function Status() {
-  const [socket, setSocket] = useState(null);
+  const socket = useContext(WebSocketContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const socketInstance = new WebSocket("ws://34.66.222.210/ws/video_stream/");
-
-    socketInstance.onopen = () => {
-      console.log("WebSocket connection established");
-      setSocket(socketInstance);
-    };
-
-    socketInstance.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    socketInstance.onclose = (event) => {
-      if (event.wasClean) {
-        console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-      } else {
-        console.error("WebSocket connection closed unexpectedly");
-      }
-      setSocket(null);
-    };
-
-    return () => {
-      if (socketInstance.readyState === WebSocket.OPEN) {
-        socketInstance.close();
-      }
-    };
-  }, []);
 
   const handleDisconnect = () => {
     if (socket) {
       socket.close();
     }
-    setSocket(null);
     navigate("/");
   };
+
+  const handleMusic = () => {
+    navigate("/music")
+  }
 
   return (
     <div className="bg-[#FCFFE0] min-h-screen">
@@ -63,11 +39,15 @@ export default function Status() {
             </p>
           </div>
 
-          <div className="bg-[#E4FFE0] flex items-center justify-center p-4 w-36 rounded-lg">
+          <button
+          className="bg-[#E4FFE0] flex items-center justify-center p-4 w-36 rounded-lg"
+          onClick={handleMusic}>
             <p className="font-semibold">Music</p>
-          </div>
+          </button>
 
-          <button className="bg-red-500 text-white p-4 rounded-lg w-36">
+          <button 
+          className="bg-red-500 text-white p-4 rounded-lg w-36"
+          onClick={handleDisconnect}>
             Disconnect
           </button>
         </div>
