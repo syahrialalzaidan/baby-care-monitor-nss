@@ -36,7 +36,7 @@ export default function Status() {
 	return (
 		<div className="bg-[#FCFFE0] min-h-screen">
 			<div className="bg-[#BACD92] h-20 md:h-24 flex justify-center items-center w-full text-3xl md:text-5xl z-50 font-semibold">
-				Name's Room
+				Baby's Room
 			</div>
 
 			<div className="py-4 px-8">
